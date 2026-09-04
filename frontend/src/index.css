@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #252421;
+  }
+
+  body {
+    @apply bg-background text-ink font-sans antialiased;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(232, 227, 216, 0.035) 1px,
+      transparent 0
+    );
+    background-size: 3px 3px;
+  }
+
+  ::selection {
+    background-color: #8b1e1e;
+    color: #e8e3d8;
+  }
+}
+
+@layer utilities {
+  .label-meta {
+    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-muted;
+  }
+
+  .paper-card {
+    @apply bg-paper border border-line shadow-doc;
+  }
+}
