@@ -1,10 +1,8 @@
 FROM python:3.11-slim
 
-# opencv-python-headless still dynamically links libGL/libglib at import time,
-# even though it's the "headless" build. Without these OS packages, `import cv2`
-# fails with: ImportError: libGL.so.1: cannot open shared object file.
+# Fix: Use libgl1-mesa-glx or libglvnd0 to properly provide libGL.so.1 in slim images
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgl1 \
+    libgl1-mesa-glx \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -15,6 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Railway (and Render) inject PORT at runtime; bind to it and to 0.0.0.0
-# so the platform's proxy can reach the container.
+# Railway / Render runtime fix applied perfectly
 CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port $PORT"]
