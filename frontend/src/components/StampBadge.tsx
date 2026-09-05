@@ -1,13 +1,20 @@
 interface StampBadgeProps {
   text: string;
+  tone?: "ink" | "alert" | "green";
   className?: string;
 }
 
-/** A fictional case stamp — e.g. "CASE OPEN", "UNDER INVESTIGATION". */
-export function StampBadge({ text, className = "" }: StampBadgeProps) {
+const TONE_CLASSES: Record<NonNullable<StampBadgeProps["tone"]>, string> = {
+  ink: "border-ink text-ink",
+  alert: "border-alert text-alert",
+  green: "border-green text-green",
+};
+
+/** A bordered pixel status box — e.g. "Case Open", "Case Closed 🎉". */
+export function StampBadge({ text, tone = "ink", className = "" }: StampBadgeProps) {
   return (
     <span
-      className={`inline-flex -rotate-3 animate-stamp-in items-center gap-1.5 border-2 border-investigation px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-investigation ${className}`}
+      className={`inline-flex animate-pixel-pop items-center gap-1.5 border-2 bg-surface px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] shadow-pixel-sm ${TONE_CLASSES[tone]} ${className}`}
     >
       {text}
     </span>

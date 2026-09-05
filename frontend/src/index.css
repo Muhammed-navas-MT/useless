@@ -4,31 +4,752 @@
 
 @layer base {
   html {
-    background-color: #252421;
+    background-color: #d7e635;
   }
 
   body {
     @apply bg-background text-ink font-sans antialiased;
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      rgba(232, 227, 216, 0.035) 1px,
-      transparent 0
-    );
-    background-size: 3px 3px;
   }
 
   ::selection {
-    background-color: #8b1e1e;
-    color: #e8e3d8;
+    background-color: #14140d;
+    color: #d7e635;
   }
 }
 
 @layer utilities {
-  .label-meta {
-    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-muted;
+  .pixel-label {
+    @apply font-sans text-[11px] uppercase tracking-[0.1em];
   }
 
-  .paper-card {
-    @apply bg-paper border border-line shadow-doc;
+  .pixel-card {
+    @apply border-2 border-ink bg-surface shadow-pixel;
   }
+
+  .pixel-btn {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-ink font-sans text-xs font-bold uppercase tracking-[0.08em] shadow-pixel-sm transition active:translate-x-[2px] active:translate-y-[2px] active:shadow-none;
+  }
+
+  .window-bar {
+    @apply flex items-center justify-between border-b-2 border-ink px-4 py-2.5;
+  }
+}
+
+/* =========================================
+   PIXEL WALKING CHARACTER
+   ========================================= */
+
+.pixel-walker {
+  position: absolute;
+  bottom: 24px;
+  right: -55px;
+
+  width: 55px;
+  height: 90px;
+
+  color: #171717;
+
+  image-rendering: pixelated;
+
+  animation: detectiveWalk 8s steps(60) infinite;
+}
+
+
+/* =========================================
+   WALKING FROM RIGHT → LEFT → RIGHT
+   ========================================= */
+
+@keyframes detectiveWalk {
+  0% {
+    right: -55px;
+  }
+
+  45% {
+    right: 205px;
+  }
+
+  50% {
+    right: 205px;
+  }
+
+  95% {
+    right: -55px;
+  }
+
+  100% {
+    right: -55px;
+  }
+}
+
+
+/* =========================================
+   HEAD
+   ========================================= */
+
+.pixel-head {
+  position: absolute;
+
+  top: 0;
+  left: 8px;
+
+  width: 38px;
+  height: 38px;
+
+  border: 4px solid currentColor;
+  background: transparent;
+
+  box-sizing: border-box;
+}
+
+
+/* Pixel corners */
+
+.pixel-head::before {
+  content: "";
+
+  position: absolute;
+
+  top: -4px;
+  left: 6px;
+
+  width: 22px;
+  height: 4px;
+
+  background: currentColor;
+}
+
+.pixel-head::after {
+  content: "";
+
+  position: absolute;
+
+  bottom: -4px;
+  left: 7px;
+
+  width: 20px;
+  height: 4px;
+
+  background: currentColor;
+}
+
+
+/* =========================================
+   HAIR / HEAD PIXELS
+   ========================================= */
+
+.head-pixel {
+  position: absolute;
+
+  width: 6px;
+  height: 6px;
+
+  background: currentColor;
+}
+
+.head-pixel-1 {
+  top: -8px;
+  left: 3px;
+}
+
+.head-pixel-2 {
+  top: -8px;
+  right: 3px;
+}
+
+
+/* =========================================
+   EYES
+   ========================================= */
+
+.pixel-eye {
+  position: absolute;
+
+  top: 12px;
+
+  width: 5px;
+  height: 5px;
+
+  background: currentColor;
+}
+
+.pixel-eye-left {
+  left: 8px;
+}
+
+.pixel-eye-right {
+  right: 8px;
+}
+
+
+/* =========================================
+   SMILE
+   ========================================= */
+
+.pixel-smile {
+  position: absolute;
+
+  height: 4px;
+
+  background: currentColor;
+}
+
+.smile-1 {
+  left: 10px;
+  bottom: 10px;
+  width: 5px;
+}
+
+.smile-2 {
+  left: 14px;
+  bottom: 7px;
+  width: 10px;
+}
+
+.smile-3 {
+  right: 7px;
+  bottom: 10px;
+  width: 5px;
+}
+
+
+/* =========================================
+   BODY
+   ========================================= */
+
+.pixel-body {
+  position: absolute;
+
+  left: 22px;
+  top: 38px;
+
+  width: 8px;
+  height: 27px;
+
+  background: currentColor;
+}
+
+
+/* =========================================
+   ARMS
+   ========================================= */
+
+.pixel-arm {
+  position: absolute;
+
+  width: 7px;
+  height: 25px;
+
+  background: currentColor;
+
+  transform-origin: top center;
+}
+
+
+/* Left arm */
+
+.pixel-arm-left {
+  left: -13px;
+  top: 2px;
+
+  transform: rotate(35deg);
+
+  animation: armLeft 0.45s steps(2) infinite;
+}
+
+
+/* Right arm */
+
+.pixel-arm-right {
+  right: -13px;
+  top: 2px;
+
+  transform: rotate(-35deg);
+
+  animation: armRight 0.45s steps(2) infinite;
+}
+
+
+/* =========================================
+   HANDS
+   ========================================= */
+
+.pixel-hand {
+  position: absolute;
+
+  bottom: -4px;
+  left: 0;
+
+  width: 8px;
+  height: 8px;
+
+  background: currentColor;
+}
+
+
+/* =========================================
+   LEGS
+   ========================================= */
+
+.pixel-leg {
+  position: absolute;
+
+  top: 24px;
+
+  width: 7px;
+  height: 25px;
+
+  background: currentColor;
+
+  transform-origin: top center;
+}
+
+
+/* Left leg */
+
+.pixel-leg-left {
+  left: -1px;
+
+  animation: legLeft 0.45s steps(2) infinite;
+}
+
+
+/* Right leg */
+
+.pixel-leg-right {
+  right: -1px;
+
+  animation: legRight 0.45s steps(2) infinite;
+}
+
+
+/* =========================================
+   FEET
+   ========================================= */
+
+.pixel-foot {
+  position: absolute;
+
+  bottom: -4px;
+
+  width: 13px;
+  height: 6px;
+
+  background: currentColor;
+}
+
+.pixel-leg-left .pixel-foot {
+  left: -5px;
+}
+
+.pixel-leg-right .pixel-foot {
+  right: -5px;
+}
+
+
+/* =========================================
+   WALKING ANIMATION
+   ========================================= */
+
+@keyframes legLeft {
+  0% {
+    transform: rotate(28deg);
+  }
+
+  50% {
+    transform: rotate(-28deg);
+  }
+
+  100% {
+    transform: rotate(28deg);
+  }
+}
+
+@keyframes legRight {
+  0% {
+    transform: rotate(-28deg);
+  }
+
+  50% {
+    transform: rotate(28deg);
+  }
+
+  100% {
+    transform: rotate(-28deg);
+  }
+}
+
+@keyframes armLeft {
+  0% {
+    transform: rotate(35deg);
+  }
+
+  50% {
+    transform: rotate(-35deg);
+  }
+
+  100% {
+    transform: rotate(35deg);
+  }
+}
+
+@keyframes armRight {
+  0% {
+    transform: rotate(-35deg);
+  }
+
+  50% {
+    transform: rotate(35deg);
+  }
+
+  100% {
+    transform: rotate(-35deg);
+  }
+}
+
+
+/* =========================================
+   PIXEL GROUND
+   ========================================= */
+
+.pixel-ground {
+  position: absolute;
+
+  bottom: 20px;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: currentColor;
+}
+
+.pixel-ground span {
+  position: absolute;
+
+  top: 7px;
+
+  width: 4px;
+  height: 4px;
+
+  background: currentColor;
+}
+
+.pixel-ground span:nth-child(1) {
+  left: 5%;
+}
+
+.pixel-ground span:nth-child(2) {
+  left: 18%;
+}
+
+.pixel-ground span:nth-child(3) {
+  left: 31%;
+}
+
+.pixel-ground span:nth-child(4) {
+  left: 46%;
+}
+
+.pixel-ground span:nth-child(5) {
+  left: 61%;
+}
+
+.pixel-ground span:nth-child(6) {
+  left: 74%;
+}
+
+.pixel-ground span:nth-child(7) {
+  left: 87%;
+}
+
+.pixel-ground span:nth-child(8) {
+  left: 97%;
+}
+
+
+
+/* =========================================
+   PIXEL DETECTIVE
+   ========================================= */
+
+.pixel-detective {
+  position: relative;
+  width: 70px;
+  height: 125px;
+  color: #171717;
+  image-rendering: pixelated;
+}
+
+
+/* =========================================
+   HAT
+   ========================================= */
+
+.detective-hat {
+  position: absolute;
+  left: 17px;
+  top: 3px;
+  width: 42px;
+  height: 10px;
+  background: currentColor;
+}
+
+.detective-hat::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: -8px;
+  width: 28px;
+  height: 9px;
+  background: currentColor;
+}
+
+.detective-hat::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: -5px;
+  width: 54px;
+  height: 5px;
+  background: currentColor;
+}
+
+
+/* =========================================
+   HEAD
+   ========================================= */
+
+.detective-head {
+  position: absolute;
+  left: 20px;
+  top: 18px;
+  width: 34px;
+  height: 34px;
+  border: 4px solid currentColor;
+  background: #f2c230;
+}
+
+.detective-head::before,
+.detective-head::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 7px;
+  background: currentColor;
+}
+
+.detective-head::before {
+  left: -8px;
+  top: 8px;
+}
+
+.detective-head::after {
+  right: -8px;
+  top: 8px;
+}
+
+
+/* =========================================
+   EYES
+   ========================================= */
+
+.detective-eye {
+  position: absolute;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  background: currentColor;
+}
+
+.detective-eye-left {
+  left: 7px;
+}
+
+.detective-eye-right {
+  right: 7px;
+}
+
+
+/* =========================================
+   SMILE
+   ========================================= */
+
+.detective-smile span {
+  position: absolute;
+  bottom: 7px;
+  height: 4px;
+  background: currentColor;
+}
+
+.detective-smile span:nth-child(1) {
+  left: 7px;
+  width: 5px;
+}
+
+.detective-smile span:nth-child(2) {
+  left: 12px;
+  width: 10px;
+}
+
+.detective-smile span:nth-child(3) {
+  right: 7px;
+  width: 5px;
+}
+
+
+/* =========================================
+   BODY
+   ========================================= */
+
+.detective-body {
+  position: absolute;
+  left: 31px;
+  top: 56px;
+  width: 9px;
+  height: 34px;
+  background: currentColor;
+}
+
+
+/* =========================================
+   ARMS
+   ========================================= */
+
+.detective-arm {
+  position: absolute;
+  top: 3px;
+  width: 7px;
+  height: 29px;
+  background: currentColor;
+  transform-origin: top center;
+}
+
+.detective-arm-left {
+  left: -16px;
+  transform: rotate(35deg);
+}
+
+.detective-arm-right {
+  right: -16px;
+  transform: rotate(-35deg);
+}
+
+
+/* Hands */
+
+.detective-hand {
+  position: absolute;
+  bottom: -4px;
+  left: -1px;
+  width: 9px;
+  height: 9px;
+  background: currentColor;
+}
+
+
+/* =========================================
+   LEGS
+   ========================================= */
+
+.detective-leg {
+  position: absolute;
+  top: 31px;
+  width: 7px;
+  height: 29px;
+  background: currentColor;
+  transform-origin: top center;
+}
+
+.detective-leg-left {
+  left: -1px;
+  transform: rotate(15deg);
+  animation: detectiveLegLeft 0.5s steps(2) infinite;
+}
+
+.detective-leg-right {
+  right: -1px;
+  transform: rotate(-15deg);
+  animation: detectiveLegRight 0.5s steps(2) infinite;
+}
+
+
+/* Feet */
+
+.detective-foot {
+  position: absolute;
+  bottom: -4px;
+  width: 13px;
+  height: 6px;
+  background: currentColor;
+}
+
+.detective-leg-left .detective-foot {
+  left: -5px;
+}
+
+.detective-leg-right .detective-foot {
+  right: -5px;
+}
+
+
+/* =========================================
+   WALKING ANIMATION
+   ========================================= */
+
+@keyframes detectiveLegLeft {
+  0% {
+    transform: rotate(25deg);
+  }
+
+  50% {
+    transform: rotate(-25deg);
+  }
+
+  100% {
+    transform: rotate(25deg);
+  }
+}
+
+@keyframes detectiveLegRight {
+  0% {
+    transform: rotate(-25deg);
+  }
+
+  50% {
+    transform: rotate(25deg);
+  }
+
+  100% {
+    transform: rotate(-25deg);
+  }
+}
+
+
+/* =========================================
+   MAGNIFYING GLASS
+   ========================================= */
+
+.detective-glass {
+  position: absolute;
+  right: -10px;
+  top: 55px;
+  width: 22px;
+  height: 28px;
+  transform: rotate(-25deg);
+}
+
+.glass-circle {
+  width: 17px;
+  height: 17px;
+  border: 4px solid currentColor;
+  border-radius: 0;
+}
+
+.glass-handle {
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  width: 5px;
+  height: 15px;
+  background: currentColor;
 }

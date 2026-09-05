@@ -4,6 +4,8 @@ import { StampBadge } from "../components/StampBadge";
 import { EvidencePhotoPanel } from "../components/EvidencePhotoPanel";
 import { ObjectFindingCard } from "../components/ObjectFindingCard";
 import { InvestigationReportPanel } from "../components/InvestigationReportPanel";
+import { PixelIcon } from "../components/pixel/PixelIcon";
+import { DETECTIVE } from "../components/pixel/pixelArt";
 
 interface CaseFilePageProps {
   result: InvestigationResult;
@@ -29,37 +31,38 @@ export function CaseFilePage({
   );
 
   const totalChanges = result.moved.length + result.missing.length + result.new.length;
-  const status = totalChanges > 0 ? "Under Investigation" : "Case Closed";
+  const caseClosed = totalChanges === 0;
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
-      <section className="flex flex-wrap items-start justify-between gap-6 animate-fade-in border-b-2 border-ink pb-6">
+      <section className="flex animate-fade-in flex-wrap items-start justify-between gap-6 border-b-2 border-ink pb-6">
         <div>
-          <p className="label-meta text-investigation">Case File</p>
-          <h1 className="mt-1 font-serif text-3xl text-ink">Case No. {caseNumber}</h1>
-          <dl className="mt-3 flex flex-wrap gap-x-8 gap-y-1 font-mono text-xs text-muted">
+          <p className="pixel-label text-alert">Case File</p>
+          <h1 className="mt-1 font-pixel text-lg uppercase text-ink sm:text-2xl">
+            Case #{caseNumber}
+          </h1>
+          <dl className="mt-3 flex flex-wrap gap-x-8 gap-y-1 text-xs text-muted">
             <div className="flex gap-2">
-              <dt>STATUS:</dt>
-              <dd className="text-ink">{status.toUpperCase()}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt>DATE:</dt>
-              <dd className="text-ink">{dateLabel}</dd>
+              <dt className="font-bold text-ink">Date:</dt>
+              <dd>{dateLabel}</dd>
             </div>
           </dl>
         </div>
-        <StampBadge text={totalChanges > 0 ? "Under Investigation" : "Evidence Reviewed"} />
+        <StampBadge
+          text={caseClosed ? "Case Closed 🎉" : "Under Investigation"}
+          tone={caseClosed ? "green" : "alert"}
+        />
       </section>
 
       <section className="mt-10">
-        <h2 className="label-meta text-ink">Photographic Evidence</h2>
+        <h2 className="pixel-label text-ink">Photographic Evidence</h2>
         <div className="mt-3">
           <EvidencePhotoPanel beforeUrl={beforeUrl} afterUrl={afterUrl} />
         </div>
       </section>
 
       <section className="mt-10">
-        <h2 className="label-meta text-ink">Object Findings</h2>
+        <h2 className="pixel-label text-ink">Object Findings</h2>
 
         <FindingGroup title="Moved Objects" empty="No objects changed position.">
           {result.moved.map((m) => (
@@ -67,7 +70,7 @@ export function CaseFilePage({
               key={m.object}
               kind="moved"
               objectName={m.object}
-              detail={`DISPLACEMENT: ${m.distance} PX`}
+              detail={`Went on a ${m.distance}px adventure across the scene.`}
             />
           ))}
         </FindingGroup>
@@ -78,7 +81,7 @@ export function CaseFilePage({
               key={name}
               kind="missing"
               objectName={name}
-              detail="NOT DETECTED IN SECOND INSPECTION"
+              detail="Not spotted in the second inspection."
             />
           ))}
         </FindingGroup>
@@ -89,7 +92,7 @@ export function CaseFilePage({
               key={name}
               kind="new"
               objectName={name}
-              detail="NOT PRESENT DURING INITIAL INSPECTION"
+              detail="Wasn't there during the initial inspection."
             />
           ))}
         </FindingGroup>
@@ -100,7 +103,7 @@ export function CaseFilePage({
               key={name}
               kind="unchanged"
               objectName={name}
-              detail="POSITION CONSISTENT"
+              detail="Right where it should be."
             />
           ))}
         </FindingGroup>
@@ -110,14 +113,15 @@ export function CaseFilePage({
         <InvestigationReportPanel report={result.report} />
       </section>
 
-      <div className="mt-10 border-t border-line pt-6">
+      <div className="mt-10 flex items-center justify-between gap-6 border-t-2 border-ink pt-8">
         <button
           type="button"
           onClick={onNewCase}
-          className="border border-ink px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-ink hover:bg-ink hover:text-paper"
+          className="pixel-btn bg-ink px-6 py-3 text-xs text-surface"
         >
-          Open New Case
+          ▶ Open New Case
         </button>
+        <PixelIcon rows={DETECTIVE} size={56} className="hidden text-ink/80 sm:block" />
       </div>
     </div>
   );
@@ -135,7 +139,7 @@ function FindingGroup({
   const hasChildren = children.length > 0;
   return (
     <div className="mt-5">
-      <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">{title}</p>
+      <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted">{title}</p>
       {hasChildren ? (
         <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">{children}</div>
       ) : (
