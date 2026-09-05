@@ -1,3 +1,6 @@
+import { PixelIcon } from "./pixel/PixelIcon";
+import { CIRCLE, DIAMOND, SQUARE, TRIANGLE } from "./pixel/pixelArt";
+
 export type FindingKind = "moved" | "missing" | "new" | "unchanged";
 
 interface ObjectFindingCardProps {
@@ -6,27 +9,29 @@ interface ObjectFindingCardProps {
   detail: string;
 }
 
-const KIND_META: Record<FindingKind, { label: string; accent: string }> = {
-  moved: { label: "Moved", accent: "text-investigation" },
-  missing: { label: "Missing", accent: "text-investigation" },
-  new: { label: "New", accent: "text-evidence" },
-  unchanged: { label: "Unchanged", accent: "text-muted" },
+const KIND_META: Record<FindingKind, { label: string; color: string; icon: string[] }> = {
+  moved: { label: "Moved", color: "text-amber", icon: TRIANGLE },
+  missing: { label: "Missing", color: "text-alert", icon: CIRCLE },
+  new: { label: "New", color: "text-green", icon: DIAMOND },
+  unchanged: { label: "Unchanged", color: "text-blue", icon: SQUARE },
 };
 
 export function ObjectFindingCard({ kind, objectName, detail }: ObjectFindingCardProps) {
   const meta = KIND_META[kind];
   return (
-    <div className="paper-card flex flex-col gap-1 px-4 py-3 animate-fade-in">
-      <div className="flex items-center justify-between">
-        <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
-          Object
-        </span>
-        <span className={`font-mono text-[11px] uppercase tracking-wider ${meta.accent}`}>
-          {meta.label}
-        </span>
+    <div className="pixel-card flex animate-fade-in items-start gap-3 px-4 py-3">
+      <PixelIcon rows={meta.icon} size={22} className={`mt-0.5 shrink-0 ${meta.color}`} />
+      <div className="min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <p className="truncate text-sm font-bold uppercase tracking-wide text-ink">
+            {objectName}
+          </p>
+          <span className={`shrink-0 text-[11px] font-bold uppercase tracking-wider ${meta.color}`}>
+            {meta.label}
+          </span>
+        </div>
+        <p className="mt-1 text-[11px] text-muted">{detail}</p>
       </div>
-      <p className="text-sm font-semibold uppercase tracking-wide text-ink">{objectName}</p>
-      <p className="font-mono text-[11px] text-muted">{detail}</p>
     </div>
   );
 }

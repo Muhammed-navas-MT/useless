@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { PixelIcon } from "./pixel/PixelIcon";
+import { UPLOAD_ARROW } from "./pixel/pixelArt";
 
 interface EvidenceCaptureSlotProps {
   index: number;
@@ -9,9 +11,9 @@ interface EvidenceCaptureSlotProps {
 }
 
 /**
- * A single evidence capture slot: webcam capture with a file-upload
- * fallback. Displays the captured photograph inside a document-style
- * evidence frame once logged.
+ * A single evidence capture slot: webcam capture with a click-to-upload
+ * fallback. Displays the captured photograph inside a pixel-framed card
+ * once logged.
  */
 export function EvidenceCaptureSlot({
   index,
@@ -55,7 +57,7 @@ export function EvidenceCaptureSlot({
       }
       setCameraActive(true);
     } catch {
-      setCameraError("Camera access unavailable — upload a photograph instead.");
+      setCameraError("Camera access unavailable — upload a photo instead.");
     }
   };
 
@@ -93,18 +95,20 @@ export function EvidenceCaptureSlot({
     onCapture(file, URL.createObjectURL(file));
   };
 
-  const idLabel = `EV-${String(index).padStart(2, "0")}`;
-
   return (
-    <div className="paper-card flex flex-col">
-      <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
-        <span className="label-meta text-ink">
-          {idLabel} &middot; {label.toUpperCase()} PHOTOGRAPH
+    <div className="pixel-card flex flex-col">
+      <div className="window-bar">
+        <span className="text-xs font-bold uppercase tracking-wider text-ink">
+          {label} photo
         </span>
-        {imageUrl && <span className="label-meta text-investigation">Logged</span>}
+        {imageUrl && (
+          <span className="text-[11px] font-bold uppercase tracking-wider text-green">
+            Logged ✓
+          </span>
+        )}
       </div>
 
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink/5">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-background/40">
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -114,30 +118,33 @@ export function EvidenceCaptureSlot({
         ) : cameraActive ? (
           <video ref={videoRef} className="h-full w-full object-cover" muted playsInline />
         ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
-            <span className="label-meta">No Photograph On File</span>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex h-full w-full flex-col items-center justify-center gap-2 border-4 border-dashed border-ink/30 px-6 text-center transition hover:border-ink/60"
+          >
+            <PixelIcon rows={UPLOAD_ARROW} size={36} className="text-ink/50" />
+            <span className="text-xs font-bold uppercase tracking-wider text-ink/60">
+              Click to upload
+            </span>
             {cameraError && (
-              <p className="max-w-[220px] text-xs text-investigation">{cameraError}</p>
+              <p className="max-w-[220px] text-xs text-alert">{cameraError}</p>
             )}
-          </div>
+          </button>
         )}
         <canvas ref={canvasRef} className="hidden" />
-
-        <span className="pointer-events-none absolute left-2 top-2 border border-evidence/70 bg-paper/90 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted">
-          {idLabel}
-        </span>
       </div>
 
       <div className="flex items-center justify-between gap-3 px-4 py-3">
-        <span className="label-meta">
-          {imageUrl ? `Captured: ${capturedAt}` : "Awaiting capture"}
+        <span className="text-[11px] font-bold uppercase tracking-wider text-muted">
+          {imageUrl ? `Captured ${capturedAt}` : `Slot ${index} · awaiting capture`}
         </span>
 
         {imageUrl ? (
           <button
             type="button"
             onClick={onRetake}
-            className="label-meta underline decoration-line underline-offset-2 hover:text-investigation"
+            className="text-[11px] font-bold uppercase tracking-wider text-ink underline decoration-2 underline-offset-2 hover:text-alert"
           >
             Retake
           </button>
@@ -145,7 +152,7 @@ export function EvidenceCaptureSlot({
           <button
             type="button"
             onClick={capturePhoto}
-            className="bg-investigation px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-ink hover:bg-investigation/90"
+            className="pixel-btn bg-ink px-3 py-1.5 text-[11px] text-surface"
           >
             Capture
           </button>
@@ -154,14 +161,14 @@ export function EvidenceCaptureSlot({
             <button
               type="button"
               onClick={activateCamera}
-              className="border border-ink px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-ink hover:bg-ink hover:text-paper"
+              className="pixel-btn bg-surface px-3 py-1.5 text-[11px] text-ink"
             >
               Camera
             </button>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="border border-line px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted hover:border-ink hover:text-ink"
+              className="pixel-btn bg-surface px-3 py-1.5 text-[11px] text-ink"
             >
               Upload
             </button>

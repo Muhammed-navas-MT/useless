@@ -5,17 +5,17 @@ interface EvidencePhotoPanelProps {
 
 export function EvidencePhotoPanel({ beforeUrl, afterUrl }: EvidencePhotoPanelProps) {
   const items = [
-    { id: "EV-01", label: "Before", url: beforeUrl },
-    { id: "EV-02", label: "After", url: afterUrl },
+    { label: "Before", url: beforeUrl },
+    { label: "After", url: afterUrl },
   ];
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {items.map((item) => (
-        <figure key={item.id} className="paper-card overflow-hidden">
-          <div className="flex items-center justify-between border-b border-line px-4 py-2">
-            <span className="label-meta text-ink">
-              {item.id} &middot; {item.label.toUpperCase()}
+        <figure key={item.label} className="pixel-card overflow-hidden">
+          <div className="window-bar">
+            <span className="text-xs font-bold uppercase tracking-wider text-ink">
+              {item.label}
             </span>
           </div>
           <img

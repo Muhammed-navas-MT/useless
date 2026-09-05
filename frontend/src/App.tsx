@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { DfiHeader } from "./components/DfiHeader";
+import { AppHeader } from "./components/AppHeader";
 import { CaseAnalysisLoader } from "./components/CaseAnalysisLoader";
 import { CaseErrorPanel } from "./components/CaseErrorPanel";
 import { LandingPage } from "./pages/LandingPage";
@@ -69,7 +69,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <DfiHeader />
+      <AppHeader />
       <main>
         {stage.name === "capture" && (
           <LandingPage onOpenInvestigation={handleOpenInvestigation} />
